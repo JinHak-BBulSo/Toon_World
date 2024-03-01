@@ -6,122 +6,87 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float h, v;
-    Animator animator;
+    private Animator animator;
+    public Animator Animator {  get { return animator; } }
 
-    [SerializeField]
-    private FixedJoystick joystick;
     [SerializeField]
     private float speed;
     private Rigidbody2D rb;
+    public Rigidbody2D Rb { get { return rb; } }
+
+    public float jumpInputTime = 0f;
+
+    public enum PlayerState
+    {
+        NONE = -1,
+        IDLE,
+        MOVE,
+        JUMP,
+        SKILL1,
+        SKILL2,
+        SKILL3,
+        DIE
+    }
+
+    public Status playerStatus_;
+    public IPlayerState currentState_ = new PlayerIdle();
+    public PlayerState playerState_ = PlayerState.NONE;
+
 
     private void Awake()
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
+        speed = 5f;
+    }
+
+    private void Start()
+    {
+        InitPlayer();
     }
     void Update()
     {
-        //KeyMove();
+        currentState_.StateUpdate();
+
+        if (playerState_ != PlayerState.JUMP)
+        {
+            if (Input.GetKey(KeyCode.W))
+            {
+                jumpInputTime += Time.deltaTime;
+            }
+
+            if (Input.GetKeyUp(KeyCode.W))
+            {
+                ChangeState(new PlayerJump());
+            }
+        }
     }
 
     void FixedUpdate()
     {
-        PlayerMove();
+        currentState_.StateFIxedUpdate();
     }
-
-    //KJH. 테스트용 키보드 무빙
-    private void KeyMove()
+    public void ChangeState(IPlayerState newState)
     {
-        h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
-
-        if (h > 0)
-        {
-            animator.SetBool("isRight", true);
-            animator.SetBool("isLeft", false);
-        }
-        else if (h < 0)
-        {
-            animator.SetBool("isRight", false);
-            animator.SetBool("isLeft", true);
-        }
-        
-        if (v > 0)
-        {
-            animator.SetBool("isDown", false);
-            animator.SetBool("isUp", true);
-        }
-        else if (v < 0)
-        {
-            animator.SetBool("isDown", true);
-            animator.SetBool("isUp", false);
-        }
-
-        if(h == 0)
-        {
-            animator.SetBool("isRight", false);
-            animator.SetBool("isLeft", false);
-        }
-
-        if(v == 0)
-        {
-            animator.SetBool("isUp", false);
-            animator.SetBool("isDown", false);
-        }
+        currentState_.StateExit();
+        currentState_ = newState;
+        currentState_.StateEnter(this);
     }
-
-    //KJH. 실조작용 스마트폰 조이스틱 무빙
-    public void PlayerMove()
+    public void InitPlayer()
     {
-        Vector3 direction = Vector3.up * joystick.Vertical + Vector3.right * joystick.Horizontal;
-        h = direction.x;
-        v = direction.y;
-
-        if (Mathf.Abs(h) > Mathf.Abs(v))
+        currentState_.StateEnter(this);
+        playerStatus_.speed = speed;
+        //playerStatus_ = GetComponent<Status>();
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.GetComponent<Ground>() != null)
         {
-            animator.SetBool("isDown", false);
-            animator.SetBool("isUp", false);
-            if (h > 0)
+            if (collision.contacts[0].normal.y > 0.7)
             {
-                animator.SetBool("isRight", true);
-                animator.SetBool("isLeft", false);
-            }
-            else if (h < 0)
-            {
-                animator.SetBool("isRight", false);
-                animator.SetBool("isLeft", true);
+                rb.velocity = Vector2.zero;
+                ChangeState(new PlayerIdle());
             }
         }
-        else
-        {
-            animator.SetBool("isRight", false);
-            animator.SetBool("isLeft", false);
-            if (v > 0)
-            {
-                animator.SetBool("isDown", false);
-                animator.SetBool("isUp", true);
-            }
-            else if (v < 0)
-            {
-                animator.SetBool("isDown", true);
-                animator.SetBool("isUp", false);
-            }
-        }
-        if (h == 0)
-        {
-            animator.SetBool("isRight", false);
-            animator.SetBool("isLeft", false);
-        }
-
-        if (v == 0)
-        {
-            animator.SetBool("isDown", false);
-            animator.SetBool("isUp", false);
-        }
-
-        //Debug.Log(direction);
-        //rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode2D.Impulse);
-        transform.position += direction * speed * Time.fixedDeltaTime;
     }
 }
