@@ -1,3 +1,4 @@
+using Spine.Unity;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -6,6 +7,8 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private SkeletonAnimation playerSpine;
+    public SkeletonAnimation PlayerSpine {  get { return playerSpine; } }
     private Animator animator;
     public Animator Animator {  get { return animator; } }
 
@@ -15,6 +18,9 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D Rb { get { return rb; } }
 
     public float jumpInputTime = 0f;
+
+    public bool attackAble = false;
+    public bool jumpAble = false;
 
     public enum PlayerState
     {
@@ -43,7 +49,7 @@ public class PlayerController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
-        speed = 5f;
+        playerSpine = GetComponent<SkeletonAnimation>();
 
         playerStateDic.Add(PlayerState.IDLE, new PlayerIdle());
         playerStateDic.Add(PlayerState.JUMP, new PlayerJump());
@@ -63,7 +69,15 @@ public class PlayerController : MonoBehaviour
     {
         currentState_.StateUpdate();
 
-        if (playerState_ != PlayerState.JUMP)
+        if(playerState_ != PlayerState.ATTACK && attackAble)
+        {
+            if (Input.GetKeyUp(KeyCode.Q))
+            {
+                ChangeState(PlayerState.ATTACK);
+            }
+        }
+
+        if (playerState_ != PlayerState.JUMP && jumpAble)
         {
             if (Input.GetKey(KeyCode.W))
             {
@@ -103,9 +117,13 @@ public class PlayerController : MonoBehaviour
     public void InitPlayer()
     {
         currentState_.StateEnter(this);
+        speed = 5f;
         playerStatus_.speed = speed;
+        attackAble = true;
+        jumpAble = true;
         //playerStatus_ = GetComponent<Status>();
     }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.GetComponent<Ground>() != null)
@@ -113,6 +131,8 @@ public class PlayerController : MonoBehaviour
             if (collision.contacts[0].normal.y > 0.7)
             {
                 rb.velocity = Vector2.zero;
+                jumpAble = true;
+                playerSpine.AnimationState.SetAnimation(0, "Animation/Jump_End", true);
                 ChangeState(PlayerState.IDLE);
             }
         }

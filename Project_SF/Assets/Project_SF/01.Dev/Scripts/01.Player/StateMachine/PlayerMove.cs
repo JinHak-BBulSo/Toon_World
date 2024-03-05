@@ -9,6 +9,7 @@ public class PlayerMove : IPlayerState
     {
         this.playerController = player;
         playerController.playerState_ = PlayerController.PlayerState.MOVE;
+        playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Run", true);
     }
 
     public void StateExit()
@@ -37,23 +38,16 @@ public class PlayerMove : IPlayerState
 
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            //hDir = -1f;
-            playerController.Animator.SetBool("isLeft", true);
-            playerController.Animator.SetBool("isRight", false);
-            playerController.Rb.velocity = Vector2.left * playerController.playerStatus_.speed;
+            playerController.transform.rotation = Quaternion.Euler(0, 0, 0);
+            playerController.Rb.velocity = Vector2.left * playerController.playerStatus_.speed + new Vector2(0, playerController.Rb.velocity.y);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            //hDir = 1f;
-            playerController.Animator.SetBool("isLeft", false);
-            playerController.Animator.SetBool("isRight", true);
-            playerController.Rb.velocity = Vector2.right * playerController.playerStatus_.speed;
+            playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
+            playerController.Rb.velocity = Vector2.right * playerController.playerStatus_.speed + new Vector2(0, playerController.Rb.velocity.y);
         }
         else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
         {
-            //hDir = 0f;
-            playerController.Animator.SetBool("isLeft", false);
-            playerController.Animator.SetBool("isRight", false);
             playerController.Rb.velocity = Vector2.zero;
             playerController.ChangeState(PlayerController.PlayerState.IDLE);
         }

@@ -10,8 +10,7 @@ public class PlayerIdle : IPlayerState
     {
         this.playerController = player;
         playerController.playerState_ = PlayerController.PlayerState.IDLE;
-        playerController.Animator.SetBool("isLeft", false);
-        playerController.Animator.SetBool("isRight", false);
+        playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Idle", true);
     }
 
     public void StateExit()

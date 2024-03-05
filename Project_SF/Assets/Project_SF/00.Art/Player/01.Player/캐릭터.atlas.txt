@@ -4,89 +4,90 @@
 	pma: true
 	scale: 0.5
 Arm_L
-	bounds: 373, 296, 206, 123
+	bounds: 782, 455, 206, 123
 Arm_R
-	bounds: 128, 148, 206, 123
+	bounds: 128, 307, 206, 123
 Body
-	bounds: 385, 668, 250, 306
+	bounds: 346, 694, 250, 306
+	rotate: 180
 Ear_L
-	bounds: 183, 362, 149, 189
-	rotate: 270
+	bounds: 851, 565, 149, 189
 Ear_R_01
-	bounds: 2, 148, 130, 171
+	bounds: 2, 307, 130, 171
 	offsets: 32, 0, 162, 171
 	rotate: 90
 Ear_R_02
-	bounds: 536, 81, 166, 106
+	bounds: 534, 239, 166, 106
 EyeLash_L
-	bounds: 647, 715, 54, 75
+	bounds: 504, 456, 54, 75
 EyeLash_R
-	bounds: 112, 306, 81, 75
+	bounds: 716, 236, 81, 75
 Eyeball_L
-	bounds: 385, 934, 21, 40
+	bounds: 189, 960, 21, 40
 Eyeball_R
-	bounds: 385, 828, 33, 42
+	bounds: 345, 958, 33, 42
 Eyewhite_L
-	bounds: 442, 599, 50, 77
+	bounds: 2, 923, 50, 77
 Eyewhite_R
-	bounds: 385, 663, 74, 78
+	bounds: 61, 922, 74, 78
 Face
-	bounds: 2, 359, 171, 122
+	bounds: 560, 475, 171, 122
 Hair
-	bounds: 2, 651, 381, 323
+	bounds: 2, 699, 376, 301
+	offsets: 5, 22, 381, 323
 Hair_F_01
-	bounds: 550, 512, 171, 216
-	rotate: 90
+	bounds: 423, 558, 171, 216
+	rotate: 270
 Hair_L
-	bounds: 223, 568, 72, 81
+	bounds: 658, 919, 72, 81
 Hair_LB
-	bounds: 877, 129, 149, 82
-	rotate: 90
+	bounds: 113, 241, 149, 82
 Hair_Tail
-	bounds: 596, 685, 49, 84
+	bounds: 53, 239, 49, 84
 Hair_r
-	bounds: 2, 483, 166, 219
-	rotate: 90
+	bounds: 134, 479, 166, 219
+	rotate: 180
 Hand_L_01
-	bounds: 456, 144, 134, 144
+	bounds: 454, 303, 134, 144
 	rotate: 90
 Hand_L_02
-	bounds: 768, 362, 167, 152
+	bounds: 254, 554, 167, 152
 Hand_R_01
-	bounds: 740, 151, 135, 127
+	bounds: 738, 310, 135, 127
 	offsets: 0, 0, 135, 128
 Hand_R_02
-	bounds: 594, 144, 134, 144
+	bounds: 592, 303, 134, 144
 	rotate: 90
 Hand_R_03
-	bounds: 336, 166, 118, 112
+	bounds: 2, 467, 118, 112
 Hand_R_04
-	bounds: 806, 864, 116, 110
+	bounds: 336, 327, 116, 110
 Leg_L
-	bounds: 2, 77, 70, 209
+	bounds: 295, 482, 70, 209
 	rotate: 90
 Leg_R
-	bounds: 265, 74, 109, 212
+	bounds: 268, 234, 109, 212
 	rotate: 270
 Line
-	bounds: 2, 280, 972, 15
+	bounds: 2, 439, 972, 15
 Lip_01
-	bounds: 385, 816, 33, 10
+	bounds: 124, 990, 33, 10
 Lip_02
-	bounds: 408, 957, 15, 17
+	bounds: 52, 983, 14, 17
+	offsets: 0, 0, 15, 17
 Lip_03
-	bounds: 223, 534, 57, 32
+	bounds: 131, 938, 57, 32
 Shoe_Walk_L
-	bounds: 304, 478, 244, 176
+	bounds: 747, 756, 244, 176
 	offsets: 0, 0, 244, 182
-	rotate: 180
+	rotate: 90
 Shoes_L
-	bounds: 768, 516, 190, 192
+	bounds: 658, 571, 190, 192
 	offsets: 6, 0, 196, 201
 	rotate: 90
 Shoes_R
-	bounds: 538, 353, 157, 188
+	bounds: 2, 581, 157, 188
 	rotate: 270
 Tail
-	bounds: 628, 656, 295, 222
-	rotate: 90
+	bounds: 538, 705, 295, 222
+	rotate: 270
