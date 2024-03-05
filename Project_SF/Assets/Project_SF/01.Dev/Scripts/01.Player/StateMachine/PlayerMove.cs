@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerMove : IPlayerState
 {
     private PlayerController playerController;
-    private float hDir = 0f;
-    private float jumpInputSec = 0f;
     public void StateEnter(PlayerController player)
     {
         this.playerController = player;
@@ -30,6 +28,13 @@ public class PlayerMove : IPlayerState
 
     private void Move()
     {
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            playerController.Rb.velocity = Vector2.zero;
+            playerController.ChangeState(PlayerController.PlayerState.SIT);
+            return;
+        }
+
         if (Input.GetKey(KeyCode.LeftArrow))
         {
             //hDir = -1f;
@@ -50,8 +55,7 @@ public class PlayerMove : IPlayerState
             playerController.Animator.SetBool("isLeft", false);
             playerController.Animator.SetBool("isRight", false);
             playerController.Rb.velocity = Vector2.zero;
-            playerController.ChangeState(new PlayerIdle());
-
+            playerController.ChangeState(PlayerController.PlayerState.IDLE);
         }
     }
 }

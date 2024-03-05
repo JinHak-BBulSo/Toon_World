@@ -26,9 +26,16 @@ public class PlayerIdle : IPlayerState
 
     public void StateUpdate()
     {
+        if (Input.GetKey(KeyCode.DownArrow))
+        {
+            playerController.Rb.velocity = Vector2.zero;
+            playerController.ChangeState(PlayerController.PlayerState.SIT);
+            return;
+        }
+
         if (Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow))
         {
-            playerController.ChangeState(new PlayerMove());
+            playerController.ChangeState(PlayerController.PlayerState.MOVE);
             return;
         }
     }

@@ -6,6 +6,7 @@ public class PlayerJump : IPlayerState
 {
     private PlayerController playerController;
     private float jumpPower = 0;
+    private bool isDownJump = false;
 
     public void StateEnter(PlayerController player)
     {
@@ -70,5 +71,6 @@ public class PlayerJump : IPlayerState
             playerController.Rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
         }
         playerController.jumpInputTime = 0;
+        isDownJump = false;
     }
 }
