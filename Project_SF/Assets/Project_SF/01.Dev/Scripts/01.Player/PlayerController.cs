@@ -17,8 +17,6 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public Rigidbody2D Rb { get { return rb; } }
 
-    public float jumpInputTime = 0f;
-
     public bool attackAble = false;
     public bool jumpAble = false;
 
@@ -79,11 +77,6 @@ public class PlayerController : MonoBehaviour
 
         if (playerState_ != PlayerState.JUMP && jumpAble)
         {
-            if (Input.GetKey(KeyCode.W))
-            {
-                jumpInputTime += Time.deltaTime;
-            }
-
             if (Input.GetKeyUp(KeyCode.W))
             {
                 ChangeState(PlayerState.JUMP);
@@ -101,6 +94,11 @@ public class PlayerController : MonoBehaviour
         if(rb.velocity.y < 0 && playerState_ != PlayerState.FALL)
         {
             ChangeState(PlayerState.FALL);
+        }
+
+        if(playerStatus_.hp <= 0)
+        {
+            ChangeState(PlayerState.DIE);
         }
     }
 

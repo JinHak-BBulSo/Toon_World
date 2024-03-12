@@ -5,8 +5,6 @@ using UnityEngine;
 public class PlayerAttack : IPlayerState
 {
     private PlayerController playerController;
-    private float attackCoolTime = 0f;
-    private float attackDelay = 0.3f;
     public void StateEnter(PlayerController player)
     {
         this.playerController = player;
@@ -36,16 +34,11 @@ public class PlayerAttack : IPlayerState
             playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
-        attackCoolTime += Time.deltaTime;
-        if(attackCoolTime > attackDelay)
-        {
-            playerController.ChangeState(PlayerController.PlayerState.IDLE);
-        }
+        playerController.ChangeState(PlayerController.PlayerState.IDLE);
     }
 
     private void Attack()
     {
-        attackCoolTime = 0;
         playerController.attackAble = false;
         playerController.playerState_ = PlayerController.PlayerState.ATTACK;
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Attack", true);

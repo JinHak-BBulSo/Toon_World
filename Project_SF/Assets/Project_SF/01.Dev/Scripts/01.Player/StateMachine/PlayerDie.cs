@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class PlayerDie : IPlayerState
 {
+    private PlayerController playerController;
     public void StateEnter(PlayerController player)
     {
-
+        this.playerController = player;
     }
 
     public void StateExit()
@@ -20,6 +21,11 @@ public class PlayerDie : IPlayerState
     }
 
     public void StateUpdate()
+    {
+
+    }
+
+    private void Die()
     {
 
     }

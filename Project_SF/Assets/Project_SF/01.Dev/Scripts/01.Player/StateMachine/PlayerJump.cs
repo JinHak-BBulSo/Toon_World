@@ -6,7 +6,6 @@ public class PlayerJump : IPlayerState
 {
     private PlayerController playerController;
     private float jumpPower = 0;
-    private bool isDownJump = false;
     private float jumpTime = 0;
 
     public void StateEnter(PlayerController player)
@@ -20,6 +19,7 @@ public class PlayerJump : IPlayerState
     public void StateExit()
     {
         jumpTime = 0;
+        playerController.PlayerSpine.skeletonDataAsset.defaultMix = 0.2f;
     }
 
     public void StateFIxedUpdate()
@@ -65,19 +65,11 @@ public class PlayerJump : IPlayerState
     public void Jump()
     {
         playerController.PlayerSpine.AnimationState.ClearTrack(0);
-        playerController.PlayerSpine.Skeleton.SetSlotsToSetupPose();
+        playerController.PlayerSpine.skeletonDataAsset.defaultMix = 0;
 
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Jump_Start", false);
-        if (playerController.jumpInputTime > 0.3)
-        {
-            playerController.Rb.AddForce(Vector2.up * jumpPower * 2, ForceMode2D.Impulse);
-        }
-        else
-        {
-            playerController.Rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-        }
+        playerController.Rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        
         playerController.jumpAble = false;
-        playerController.jumpInputTime = 0;
-        isDownJump = false;
     }
 }
