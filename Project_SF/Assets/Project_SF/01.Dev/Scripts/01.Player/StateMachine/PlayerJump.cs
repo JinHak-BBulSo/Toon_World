@@ -12,7 +12,7 @@ public class PlayerJump : IPlayerState
     {
         this.playerController = player;
         playerController.playerState_ = PlayerController.PlayerState.JUMP;
-        jumpPower = 5f;
+        jumpPower = 6.5f;
         Jump();
     }
 
@@ -69,7 +69,5 @@ public class PlayerJump : IPlayerState
 
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Jump_Start", false);
         playerController.Rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
-        
-        playerController.jumpAble = false;
     }
 }

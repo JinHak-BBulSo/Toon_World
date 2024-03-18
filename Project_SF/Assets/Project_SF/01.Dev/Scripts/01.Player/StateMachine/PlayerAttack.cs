@@ -25,12 +25,12 @@ public class PlayerAttack : IPlayerState
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerController.Rb.velocity = Vector2.left * playerController.playerStatus_.speed;
+            playerController.Rb.velocity = new Vector2(-1 * playerController.playerStatus_.speed, playerController.Rb.velocity.y);
             playerController.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            playerController.Rb.velocity = Vector2.right * playerController.playerStatus_.speed;
+            playerController.Rb.velocity = new Vector2(playerController.playerStatus_.speed, playerController.Rb.velocity.y);
             playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
 
@@ -42,5 +42,6 @@ public class PlayerAttack : IPlayerState
         playerController.attackAble = false;
         playerController.playerState_ = PlayerController.PlayerState.ATTACK;
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Attack", true);
+        playerController.Gun.Fire();
     }
 }

@@ -18,7 +18,13 @@ public class PlayerController : MonoBehaviour
     public Rigidbody2D Rb { get { return rb; } }
 
     public bool attackAble = false;
-    public bool jumpAble = false;
+    public int jumpCount = 0;
+
+    public bool isGround = false;
+
+    [SerializeField]
+    private Gun gun;
+    public Gun Gun { get { return gun; } }
 
     public enum PlayerState
     {
@@ -30,6 +36,7 @@ public class PlayerController : MonoBehaviour
         DASH,
         SIT,
         TACKLE,
+        WALLATTACH,
         ATTACK,
         SKILL1,
         SKILL2,
@@ -69,16 +76,17 @@ public class PlayerController : MonoBehaviour
 
         if(playerState_ != PlayerState.ATTACK && attackAble)
         {
-            if (Input.GetKeyUp(KeyCode.Q))
+            if (Input.GetKeyUp(KeyCode.Z))
             {
                 ChangeState(PlayerState.ATTACK);
             }
         }
 
-        if (playerState_ != PlayerState.JUMP && jumpAble)
+        if (jumpCount < 2)
         {
-            if (Input.GetKeyUp(KeyCode.W))
+            if (Input.GetKeyUp(KeyCode.Space))
             {
+                jumpCount++;
                 ChangeState(PlayerState.JUMP);
             }
         }
@@ -118,21 +126,7 @@ public class PlayerController : MonoBehaviour
         speed = 5f;
         playerStatus_.speed = speed;
         attackAble = true;
-        jumpAble = true;
+        isGround = true;
         //playerStatus_ = GetComponent<Status>();
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.GetComponent<Ground>() != null)
-        {
-            if (collision.contacts[0].normal.y > 0.7)
-            {
-                rb.velocity = Vector2.zero;
-                jumpAble = true;
-                playerSpine.AnimationState.SetAnimation(0, "Animation/Jump_End", true);
-                ChangeState(PlayerState.IDLE);
-            }
-        }
     }
 }
