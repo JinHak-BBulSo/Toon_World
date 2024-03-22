@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class Gun : MonoBehaviour
 {
-    private bool fireAble = true;
+    public bool fireAble = true;
     public int power;
-    public float fireRate;
+    public float fireRate = 1.1f;
+    public float bulletSpeed;
+    public float range;
+    public float neutralize;
+    public int mpRecovery;
+    public int bulletDestroy;
+    public Vector2 bulletSize;
+    public Vector2 bulletColliderSize;
+
     [SerializeField]
     private BulletPool _BulletPool;
     [SerializeField]
@@ -16,6 +24,8 @@ public class Gun : MonoBehaviour
     {
         if (!fireAble) return;
         Bullet bullet = _BulletPool._BulletPool.Get();
+        bullet.gun = this;
+        bullet.startPos = this.transform.position;
 
         int y = 0;
         if (Input.GetKey(KeyCode.DownArrow))
@@ -52,7 +62,9 @@ public class Gun : MonoBehaviour
 
     IEnumerator FireDelay()
     {
-        yield return new WaitForSeconds(fireRate);
+        float fireDelay = 0f;
+        fireDelay = (100f / (float)_PlayerController.playerStatus_.attackSpeed) * 1.1f;
+        yield return new WaitForSeconds(fireDelay);
         fireAble = true;
     }
 }

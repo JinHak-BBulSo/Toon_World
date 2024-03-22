@@ -5,14 +5,12 @@ using UnityEngine;
 public class PlayerJump : IPlayerState
 {
     private PlayerController playerController;
-    private float jumpPower = 0;
     private float jumpTime = 0;
 
     public void StateEnter(PlayerController player)
     {
         this.playerController = player;
         playerController.playerState_ = PlayerController.PlayerState.JUMP;
-        jumpPower = 6.5f;
         Jump();
     }
 
@@ -68,6 +66,8 @@ public class PlayerJump : IPlayerState
         playerController.PlayerSpine.skeletonDataAsset.defaultMix = 0;
 
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Jump_Start", false);
-        playerController.Rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
+        playerController.Rb.AddForce(playerController.playerStatus_.jumpPower * playerController.jumpDir, ForceMode2D.Impulse);
+
+        playerController.isGround = false;
     }
 }

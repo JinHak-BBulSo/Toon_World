@@ -1043,13 +1043,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   attackAble: 0
+  jumpDir: {x: 0, y: 0}
   jumpCount: 0
+  isGround: 0
+  isRightWall: 0
+  isLeftWall: 0
   gun: {fileID: 227951848}
   playerStatus_:
     hp: 1000
     mp: 0
     speed: 3
     attackSpeed: 0
+    jumpPower: 6.5
   playerState_: -1
 --- !u!114 &1611219044
 MonoBehaviour:

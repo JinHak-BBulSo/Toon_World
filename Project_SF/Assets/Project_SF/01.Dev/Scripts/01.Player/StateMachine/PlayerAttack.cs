@@ -13,7 +13,7 @@ public class PlayerAttack : IPlayerState
 
     public void StateExit()
     {
-        playerController.attackAble = true;
+
     }
 
     public void StateFIxedUpdate()
@@ -33,13 +33,10 @@ public class PlayerAttack : IPlayerState
             playerController.Rb.velocity = new Vector2(playerController.playerStatus_.speed, playerController.Rb.velocity.y);
             playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
-
-        playerController.ChangeState(PlayerController.PlayerState.IDLE);
     }
 
     private void Attack()
     {
-        playerController.attackAble = false;
         playerController.playerState_ = PlayerController.PlayerState.ATTACK;
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Attack", true);
         playerController.Gun.Fire();

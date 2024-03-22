@@ -53,6 +53,6 @@ public class PlayerFall : IPlayerState
 
     private void Fall()
     {
-
+        playerController.isGround = false;
     }
 }

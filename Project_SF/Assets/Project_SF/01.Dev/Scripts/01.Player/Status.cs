@@ -9,4 +9,7 @@ public class Status
     public int mp;
     public float speed;
     public int attackSpeed;
+    public float jumpPower;
+    public int maxJumpCount;
+    public float dashCooltime;
 }

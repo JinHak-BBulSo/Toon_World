@@ -1,4 +1,5 @@
 using Spine.Unity;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,10 +18,16 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     public Rigidbody2D Rb { get { return rb; } }
 
-    public bool attackAble = false;
+    public Vector2 jumpDir = Vector2.zero;
     public int jumpCount = 0;
 
+    //KJH. 충돌 관련 변수
     public bool isGround = false;
+    public bool isRightWall = false;
+    public bool isLeftWall = false;
+
+    //KJH. 대쉬
+    public bool dashAble = true;
 
     [SerializeField]
     private Gun gun;
@@ -35,13 +42,14 @@ public class PlayerController : MonoBehaviour
         FALL,
         DASH,
         SIT,
-        TACKLE,
-        WALLATTACH,
+        ROLL,
+        CLIMB,
         ATTACK,
         SKILL1,
         SKILL2,
         SKILL3,
-        DIE
+        HIT,
+        DIE,
     }
 
     public Status playerStatus_;
@@ -61,6 +69,7 @@ public class PlayerController : MonoBehaviour
         playerStateDic.Add(PlayerState.FALL, new PlayerFall());
         playerStateDic.Add(PlayerState.MOVE, new PlayerMove());
         playerStateDic.Add(PlayerState.DASH, new PlayerDash());
+        playerStateDic.Add(PlayerState.CLIMB, new PlayerClimb());
         playerStateDic.Add(PlayerState.SIT, new PlayerSit());
         playerStateDic.Add(PlayerState.DIE, new PlayerDie());
         playerStateDic.Add(PlayerState.ATTACK, new PlayerAttack());
@@ -74,32 +83,54 @@ public class PlayerController : MonoBehaviour
     {
         currentState_.StateUpdate();
 
-        if(playerState_ != PlayerState.ATTACK && attackAble)
+        if (Input.GetKeyUp(KeyCode.Z) && gun.fireAble)
         {
-            if (Input.GetKeyUp(KeyCode.Z))
+            if (Input.GetKey(KeyCode.LeftArrow) && isLeftWall)
+            {
+
+            }
+            else if (Input.GetKey(KeyCode.RightArrow) && isRightWall)
+            {
+
+            }
+            else
             {
                 ChangeState(PlayerState.ATTACK);
             }
         }
 
-        if (jumpCount < 2)
+        if (jumpCount < playerStatus_.maxJumpCount)
         {
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 jumpCount++;
+                if(playerState_ == PlayerState.CLIMB)
+                {
+                    if (isRightWall)
+                    {
+                        transform.rotation = Quaternion.Euler(0, 0, 0);
+                        jumpDir = new Vector2(-1, 1);
+                    }
+                    else if (isLeftWall)
+                    {
+                        transform.rotation = Quaternion.Euler(0, -180, 0);
+                        jumpDir = new Vector2(1, 1);
+                    }
+                }
+                else
+                {
+                    jumpDir = new Vector2(0, 1);
+                }
                 ChangeState(PlayerState.JUMP);
             }
         }
 
-        if(playerState_ != PlayerState.DASH)
+        if (Input.GetKeyDown(KeyCode.E) && dashAble)
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                ChangeState(PlayerState.DASH);
-            }
+            ChangeState(PlayerState.DASH);
         }
 
-        if(rb.velocity.y < 0 && playerState_ != PlayerState.FALL)
+        if (rb.velocity.y < 0 && playerState_ != PlayerState.FALL && !isRightWall && !isLeftWall)
         {
             ChangeState(PlayerState.FALL);
         }
@@ -125,8 +156,18 @@ public class PlayerController : MonoBehaviour
         currentState_.StateEnter(this);
         speed = 5f;
         playerStatus_.speed = speed;
-        attackAble = true;
         isGround = true;
+        dashAble = true;
         //playerStatus_ = GetComponent<Status>();
+    }
+
+    public void DelayCall(float time, Action func)
+    {
+        StartCoroutine(DelayedCall(time, func));
+    }
+    IEnumerator DelayedCall(float time, Action func)
+    {
+        yield return new WaitForSeconds(time);
+        func.Invoke();
     }
 }

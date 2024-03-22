@@ -18,7 +18,7 @@ public class PlayerDash : IPlayerState
 
     public void StateExit()
     {
-
+        dashTime = 0;
     }
 
     public void StateFIxedUpdate()
@@ -38,8 +38,16 @@ public class PlayerDash : IPlayerState
     private void Dash()
     {
         dashTime = 0;
+        playerController.dashAble = false;
         playerController.playerState_ = PlayerController.PlayerState.DASH;
         playerController.Rb.AddForce(new Vector2(playerController.Rb.velocity.x * dashPower, 0), ForceMode2D.Impulse);
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Roll", false);
+
+        playerController.DelayCall(playerController.playerStatus_.dashCooltime, DashCoolTime);
+    }
+
+    private void DashCoolTime()
+    {
+        playerController.dashAble = true;
     }
 }
