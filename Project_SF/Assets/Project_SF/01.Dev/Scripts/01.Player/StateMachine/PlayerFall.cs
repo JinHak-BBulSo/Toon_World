@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerFall : IPlayerState
 {
     private PlayerController playerController;
+    private float gravityOverlap = 6f;
     public void StateEnter(PlayerController player)
     {
         this.playerController = player;
@@ -14,7 +15,7 @@ public class PlayerFall : IPlayerState
 
     public void StateExit()
     {
-
+        playerController.Rb.gravityScale = 1f;
     }
 
     public void StateFIxedUpdate()
@@ -49,6 +50,8 @@ public class PlayerFall : IPlayerState
 
             }
         }
+
+        playerController.Rb.gravityScale += gravityOverlap * Time.deltaTime;
     }
 
     private void Fall()

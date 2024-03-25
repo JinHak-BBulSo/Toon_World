@@ -14,7 +14,7 @@ public class PlayerClimb : IPlayerState
 
     public void StateExit()
     {
-        
+        playerController.Rb.gravityScale = 1;
     }
 
     public void StateFIxedUpdate()
@@ -24,11 +24,13 @@ public class PlayerClimb : IPlayerState
 
     public void StateUpdate()
     {
-        if(Input.GetKeyUp(KeyCode.Space))
+        if (playerController.isRightWall)
         {
-            playerController.isLeftWall = false;
-            playerController.isRightWall = false;
-            playerController.Rb.gravityScale = 1;
+            playerController.transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+        else if(playerController.isLeftWall)
+        {
+            playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 

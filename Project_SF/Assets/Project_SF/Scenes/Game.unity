@@ -296,8 +296,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5664cdb9126e794a858b93696d71a23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireAble: 1
   power: 0
-  fireRate: 0.3
+  fireRate: 1.1
+  bulletSpeed: 10
+  range: 25
+  neutralize: 0
+  mpRecovery: 0
+  bulletDestroy: 0
+  bulletSize: {x: 0, y: 0}
+  bulletColliderSize: {x: 0, y: 0}
   _BulletPool: {fileID: 1468444240}
   _PlayerController: {fileID: 1611219043}
 --- !u!1 &397358508
@@ -462,6 +470,8 @@ GameObject:
   - component: {fileID: 917318405}
   - component: {fileID: 917318404}
   - component: {fileID: 917318403}
+  - component: {fileID: 917318407}
+  - component: {fileID: 917318406}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -543,6 +553,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &917318406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917318402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb632cbf39345f847bd726c2d240d06c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 1611219043}
+--- !u!114 &917318407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917318402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1 &1126226718
 GameObject:
   m_ObjectHideFlags: 0
@@ -1042,19 +1109,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 0
-  attackAble: 0
   jumpDir: {x: 0, y: 0}
   jumpCount: 0
   isGround: 0
   isRightWall: 0
   isLeftWall: 0
+  dashAble: 1
   gun: {fileID: 227951848}
   playerStatus_:
     hp: 1000
     mp: 0
     speed: 3
-    attackSpeed: 0
+    attackSpeed: 100
     jumpPower: 6.5
+    maxJumpCount: 2
+    dashCooltime: 10
   playerState_: -1
 --- !u!114 &1611219044
 MonoBehaviour:

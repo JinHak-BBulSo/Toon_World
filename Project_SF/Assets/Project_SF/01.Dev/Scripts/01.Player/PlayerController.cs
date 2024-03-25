@@ -57,7 +57,6 @@ public class PlayerController : MonoBehaviour
     public PlayerState playerState_ = PlayerState.NONE;
     private Dictionary<PlayerState, IPlayerState> playerStateDic = new Dictionary<PlayerState, IPlayerState>();
 
-
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -69,6 +68,7 @@ public class PlayerController : MonoBehaviour
         playerStateDic.Add(PlayerState.FALL, new PlayerFall());
         playerStateDic.Add(PlayerState.MOVE, new PlayerMove());
         playerStateDic.Add(PlayerState.DASH, new PlayerDash());
+        playerStateDic.Add(PlayerState.ROLL, new PlayerRoll());
         playerStateDic.Add(PlayerState.CLIMB, new PlayerClimb());
         playerStateDic.Add(PlayerState.SIT, new PlayerSit());
         playerStateDic.Add(PlayerState.DIE, new PlayerDie());
@@ -81,8 +81,6 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        currentState_.StateUpdate();
-
         if (Input.GetKeyUp(KeyCode.Z) && gun.fireAble)
         {
             if (Input.GetKey(KeyCode.LeftArrow) && isLeftWall)
@@ -125,9 +123,16 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.E) && dashAble)
+        if (Input.GetKeyDown(KeyCode.E) && playerState_ != PlayerState.DASH && playerState_ != PlayerState.ROLL)
         {
-            ChangeState(PlayerState.DASH);
+            if (dashAble)
+            {
+                ChangeState(PlayerState.DASH);
+            }
+            else
+            {
+                ChangeState(PlayerState.ROLL);
+            }
         }
 
         if (rb.velocity.y < 0 && playerState_ != PlayerState.FALL && !isRightWall && !isLeftWall)
@@ -139,6 +144,8 @@ public class PlayerController : MonoBehaviour
         {
             ChangeState(PlayerState.DIE);
         }
+
+        currentState_.StateUpdate();
     }
 
     void FixedUpdate()
@@ -158,6 +165,8 @@ public class PlayerController : MonoBehaviour
         playerStatus_.speed = speed;
         isGround = true;
         dashAble = true;
+
+        playerStatus_.invincibility = false;
         //playerStatus_ = GetComponent<Status>();
     }
 

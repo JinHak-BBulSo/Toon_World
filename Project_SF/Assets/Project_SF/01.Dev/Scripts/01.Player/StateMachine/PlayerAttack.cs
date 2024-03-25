@@ -8,6 +8,7 @@ public class PlayerAttack : IPlayerState
     public void StateEnter(PlayerController player)
     {
         this.playerController = player;
+        playerController.playerState_ = PlayerController.PlayerState.ATTACK;
         Attack();
     }
 
@@ -25,20 +26,26 @@ public class PlayerAttack : IPlayerState
     {
         if (Input.GetKey(KeyCode.LeftArrow))
         {
-            playerController.Rb.velocity = new Vector2(-1 * playerController.playerStatus_.speed, playerController.Rb.velocity.y);
             playerController.transform.rotation = Quaternion.Euler(0, 0, 0);
         }
         else if (Input.GetKey(KeyCode.RightArrow))
         {
-            playerController.Rb.velocity = new Vector2(playerController.playerStatus_.speed, playerController.Rb.velocity.y);
             playerController.transform.rotation = Quaternion.Euler(0, 180, 0);
         }
     }
 
     private void Attack()
     {
-        playerController.playerState_ = PlayerController.PlayerState.ATTACK;
         playerController.PlayerSpine.AnimationState.SetAnimation(0, "Animation/Attack", true);
         playerController.Gun.Fire();
+
+        if(playerController.isLeftWall || playerController.isRightWall)
+        {
+            playerController.ChangeState(PlayerController.PlayerState.CLIMB);
+        }
+        else
+        {
+            playerController.ChangeState(PlayerController.PlayerState.IDLE);
+        }
     }
 }

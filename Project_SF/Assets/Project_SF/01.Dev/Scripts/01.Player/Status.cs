@@ -12,4 +12,6 @@ public class Status
     public float jumpPower;
     public int maxJumpCount;
     public float dashCooltime;
+
+    public bool invincibility;
 }
